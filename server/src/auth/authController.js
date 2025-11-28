@@ -16,8 +16,6 @@ const login = async (req, res) => {
   try {
     const token = await authService.loginUser(email, password);
     res.status(200).json({ token });
-    const userId = req.user.userId;
-console.log("Logged in user:", userId);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

@@ -21,8 +21,6 @@ const getUserByEmail = async (email) => {
   }
 };
 
-module.exports = { getUserByEmail };
-
 
 const createUser = async (userData) => {
   const query = squel.insert()
