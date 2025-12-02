@@ -1,0 +1,33 @@
+
+<div class="doctor-layout">
+  
+  <app-doctor-sidebar></app-doctor-sidebar>
+
+  <div class="content-area">
+    <h2>Schedule Availability</h2>
+
+    <form [formGroup]="scheduleForm" (ngSubmit)="submit()" class="schedule-form">
+      <label>Date</label>
+      <input type="date" formControlName="date" />
+
+      <label>Start time</label>
+      <input type="time" formControlName="start_time" />
+
+      <label>End time</label>
+      <input type="time" formControlName="end_time" />
+
+      <label>Slot duration (minutes)</label>
+      <input type="number" min="5" formControlName="slot_duration_minutes" />
+
+      <button type="submit">Save Availability</button>
+    </form>
+
+    <div *ngIf="slots.length > 0">
+      <h3>Slots</h3>
+      <div *ngFor="let s of slots">
+        {{ s.start }} - {{ s.end }}
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,32 @@
+<div class="auth-card">
+  <h2>Create Account</h2>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+    <div class="row">
+      <input formControlName="first_name" placeholder="First name" />
+      <input formControlName="last_name" placeholder="Last name" />
+    </div>
+
+    <input formControlName="email" placeholder="Email" />
+    <input type="password" formControlName="password" placeholder="Password" />
+
+    <select formControlName="role">
+      <option *ngFor="let r of roles" [value]="r.id">
+        {{ r.name }}
+      </option>
+    </select>
+
+    <input formControlName="phone_number" placeholder="Phone number" />
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <button type="submit" [disabled]="loading">
+      {{ loading ? "Registering..." : "Register" }}
+    </button>
+  </form>
+
+  <p class="muted">Already have an account?
+    <a routerLink="/auth/login">Login</a>
+  </p>
+</div>

@@ -1,0 +1,5 @@
+.env
+database.json
+package-lock.json
+node_modules/
+client/src/environment/
