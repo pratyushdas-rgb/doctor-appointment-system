@@ -6,9 +6,10 @@ import { RouterModule } from '@angular/router';
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
-  declarations: [DashboardComponent, ScheduleComponent, SidebarComponent],
+  declarations: [DashboardComponent, ScheduleComponent, SidebarComponent, ProfileComponent],
   imports: [
     CommonModule,
     RouterModule,

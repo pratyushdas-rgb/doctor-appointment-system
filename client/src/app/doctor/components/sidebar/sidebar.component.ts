@@ -12,7 +12,8 @@ export class SidebarComponent {
 
   links = [
     { label: 'Dashboard', path: '/doctor/dashboard' },
-    { label: 'Schedule Availability', path: '/doctor/schedule' }
+    { label: 'Schedule Availability', path: '/doctor/schedule' },
+    { label: 'Profile', path:'/doctor/profile'}
   ];
 
   constructor(private auth: AuthService, private router: Router) {}

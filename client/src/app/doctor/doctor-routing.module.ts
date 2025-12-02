@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RoleGuard } from '../guards/role.guard';
 import { ScheduleComponent } from './components/schedule/schedule.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   {
@@ -19,7 +20,13 @@ const routes: Routes = [
     path: 'schedule',
     component: ScheduleComponent,
     canActivate: [RoleGuard]
-  }
+  },
+  {
+  path: 'profile',
+  component: ProfileComponent,
+  canActivate: [RoleGuard]
+}
+
 ];
 
 

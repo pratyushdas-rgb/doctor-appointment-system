@@ -1,0 +1,39 @@
+.doctor-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.profile-container {
+  flex: 1;
+  padding: 30px;
+  background: #f7f9fc;
+  margin-left: 300px !important;
+}
+
+form {
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  font-weight: 600;
+}
+
+select, textarea, input {
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 150px;
+  padding: 10px;
+  background: #1e40af;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}

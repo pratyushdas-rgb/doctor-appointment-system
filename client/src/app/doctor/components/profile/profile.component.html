@@ -1,0 +1,42 @@
+
+<div class="doctor-layout">
+  <app-doctor-sidebar></app-doctor-sidebar>
+
+  <div class="profile-container">
+
+    <h2>Doctor Profile</h2>
+
+    <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+
+      <label>Specialization</label>
+      <select formControlName="specialization_id">
+        <option *ngFor="let s of specializations" [value]="s.id">
+          {{ s.name }}
+        </option>
+      </select>
+
+      <label>Department</label>
+      <select formControlName="department_id">
+        <option *ngFor="let d of departments" [value]="d.id">
+          {{ d.name }}
+        </option>
+      </select>
+
+      <label>Bio</label>
+      <textarea rows="5" formControlName="bio"></textarea>
+
+      <div class="docs">
+        <h4>Uploaded Documents</h4>
+        <div *ngIf="profileForm.value.documents?.length; else nodocs">
+          <div *ngFor="let doc of profileForm.value.documents">
+            <a [href]="doc.url" target="_blank">{{ doc.name }}</a>
+          </div>
+        </div>
+        <ng-template #nodocs>No documents uploaded.</ng-template>
+      </div>
+
+      <button type="submit">Save</button>
+    </form>
+
+  </div>
+</div>
