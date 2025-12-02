@@ -58,4 +58,18 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
+
+  requestPasswordReset(email: string) {
+    return this.http.post<{ message?: string }>(
+      `${this.base}/request-password-reset`,
+      { email }
+    );
+  }
+
+  resetPassword(token: string, newPassword: string) {
+    return this.http.post<{ message?: string }>(`${this.base}/reset-password`, {
+      token,
+      newPassword,
+    });
+  }
 }

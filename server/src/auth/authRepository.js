@@ -41,4 +41,62 @@ const createUser = async (userData) => {
   }
 };
 
-module.exports = { createUser, getUserByEmail };
+const setResetToken = async (email, token, expires) => {
+  const query = {
+    text: `UPDATE users
+           SET reset_token = $1,
+               reset_token_expires = $2
+           WHERE email = $3
+           RETURNING id, email`,
+    values: [token, expires, email]
+  };
+
+  try {
+    const res = await client.query(query);
+    return res.rows[0] || null;
+  } catch (err) {
+    console.error('Error setting reset token:', err);
+    throw err;
+  }
+};
+
+
+const getUserByResetToken = async (token) => {
+  const query = {
+    text: `SELECT id, email, first_name, last_name
+           FROM users
+           WHERE reset_token = $1
+             AND reset_token_expires > NOW()
+           LIMIT 1`,
+    values: [token]
+  };
+
+  try {
+    const res = await client.query(query);
+    return res.rows[0] || null;
+  } catch (err) {
+    console.error('Error querying user by reset token:', err);
+    throw err;
+  }
+};
+
+const updatePasswordById = async (userId, passwordHash) => {
+  const query = {
+    text: `UPDATE users
+           SET password_hash = $1,
+               reset_token = NULL,
+               reset_token_expires = NULL
+           WHERE id = $2`,
+    values: [passwordHash, userId]
+  };
+
+  try {
+    await client.query(query);
+    return true;
+  } catch (err) {
+    console.error('Error updating password:', err);
+    throw err;
+  }
+};
+
+module.exports = { createUser, getUserByEmail,  setResetToken, getUserByResetToken, updatePasswordById };
