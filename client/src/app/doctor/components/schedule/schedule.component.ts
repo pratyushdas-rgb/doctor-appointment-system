@@ -38,18 +38,22 @@ scheduleForm = this.fb.nonNullable.group({
   }
 
 submit() {
+  this.error = null;
+  this.message = null;
+
   if (this.scheduleForm.invalid) {
     this.scheduleForm.markAllAsTouched();
     return;
   }
 
   const payload = this.scheduleForm.getRawValue();
+  this.loading = true;
 
   this.availability.setAvailability(payload).subscribe({
     next: (res) => {
       this.loading = false;
       this.message = 'Availability saved';
-      this.slots = res.slots || [];
+      this.slots = res.slots || res || [];
     },
     error: (err) => {
       this.loading = false;
@@ -58,34 +62,36 @@ submit() {
   });
 }
 
+previewSlots() {
+  this.error = null;
+  this.message = null;
 
-  previewSlots() {
-    this.error = null;
-    this.message = null;
-    if (!this.user || !this.user.id) {
-      this.error = 'User not identified.';
-      return;
-    }
-    const date = this.scheduleForm.value.date;
-    if (!date) {
-      this.error = 'Select a date first';
-      return;
-    }
-    this.loading = true;
-    this.availability.getAvailabilitySlots(date).subscribe({
-      next: (res: any) => {
-        this.loading = false;
-        // backend returns { date, slots }
-        this.slots = res.slots || res || [];
-      },
-      error: (err) => {
-        this.loading = false;
-        this.error = err?.error?.error || 'Failed to fetch slots';
+  if (!this.user || !this.user.id) {
+    this.error = 'User not identified.';
+    return;
+  }
+
+  const date = this.scheduleForm.get('date')?.value;
+  if (!date) {
+    this.error = 'Select a date first';
+    return;
+  }
+
+  this.loading = true;
+  this.availability.getAvailabilitySlots(date).subscribe({
+    next: (res: any) => {
+      this.loading = false;
+      this.slots = res?.slots ?? res ?? [];
+      if (!this.slots.length) {
+        this.message = 'No slots generated for the selected date.';
       }
-    });
-  }
+    },
+    error: (err) => {
+      this.loading = false;
+      this.error = err?.error?.error || 'Failed to fetch slots';
+    }
+  });
+}
 
-  cancel() {
-    this.router.navigate(['/doctor']);
-  }
+
 }

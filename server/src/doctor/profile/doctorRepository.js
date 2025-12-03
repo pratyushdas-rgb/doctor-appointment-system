@@ -67,8 +67,40 @@ const updateDoctorProfile = async ({ doctorId, specializationId, departmentId, b
   return res.rows.length ? res.rows[0] : null;
 };
 
+const appendDocumentToDoctor = async (doctorId, docObj) => {
+  const text = `
+    UPDATE doctors
+    SET documents = COALESCE(documents, '[]'::jsonb) || $1::jsonb,
+        updated_at = now()
+    WHERE id = $2
+    RETURNING documents
+  `;
+  const values = [JSON.stringify(docObj), doctorId];
+  const res = await client.query({ text, values });
+  return res.rows.length ? res.rows[0].documents : null;
+};
+
+const removeDocumentFromDoctor = async (doctorId, fileUrl) => {
+  const sql = `
+    UPDATE doctors
+    SET documents = (
+      SELECT jsonb_agg(elem)
+      FROM jsonb_array_elements(documents) AS elem
+      WHERE elem->>'url' != $1
+    ),
+    updated_at = now()
+    WHERE id = $2
+    RETURNING documents
+  `;
+
+  const res = await client.query({ text: sql, values: [fileUrl, doctorId] });
+  return res.rows.length ? res.rows[0].documents : [];
+};
+
 module.exports = {
   getDoctorIdByUserId,
   getDoctorProfileByDoctorId,
-  updateDoctorProfile
+  updateDoctorProfile,
+  appendDocumentToDoctor,
+  removeDocumentFromDoctor
 };

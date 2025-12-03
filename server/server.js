@@ -7,6 +7,7 @@ const availabilityRoutes = require('./src/doctor/availability/availabilityRoutes
 const profileRoutes = require('./src/doctor/profile/doctorRoutes')
 const authenticateToken = require('./src/middleware/authMiddleware');
 const referenceRoutes = require('./src/reference/referenceRoutes');
+const path = require('path');
 
 dotenv.config();
 
@@ -22,7 +23,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api',authenticateToken,availabilityRoutes);
 app.use('/api',authenticateToken,profileRoutes)
 app.use('/api', referenceRoutes);
-
+app.use('/uploads', express.static(path.join(__dirname, 'src', 'uploads')));
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

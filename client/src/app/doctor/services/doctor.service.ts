@@ -26,4 +26,19 @@ export class DoctorService {
   getDepartments() {
     return this.http.get<any[]>(`${this.base}/departments`);
   }
+
+    uploadDocument(formData: FormData) {
+    return this.http.post<any>(`${this.base}/doctor/profile/documents`, formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+
+  deleteDocument(url: string) {
+  return this.http.delete<any>(`${this.base}/doctor/profile/documents`, {
+    body: { url }
+  });
+}
+
+
 }

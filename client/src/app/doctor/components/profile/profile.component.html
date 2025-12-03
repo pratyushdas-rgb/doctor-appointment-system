@@ -1,13 +1,10 @@
-
 <div class="doctor-layout">
   <app-doctor-sidebar></app-doctor-sidebar>
 
   <div class="profile-container">
-
     <h2>Doctor Profile</h2>
 
     <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
-
       <label>Specialization</label>
       <select formControlName="specialization_id">
         <option *ngFor="let s of specializations" [value]="s.id">
@@ -27,9 +24,33 @@
 
       <div class="docs">
         <h4>Uploaded Documents</h4>
+
+        <div class="upload-row">
+          <input
+            type="file"
+            (change)="onFileSelected($event)"
+            [disabled]="uploading"
+          />
+          <div *ngIf="uploading" class="progress">
+            Uploading... {{ uploadProgress }}%
+          </div>
+        </div>
+
         <div *ngIf="profileForm.value.documents?.length; else nodocs">
           <div *ngFor="let doc of profileForm.value.documents">
-            <a [href]="doc.url" target="_blank">{{ doc.name }}</a>
+            <a
+              [href]="getDocUrl(doc.url)"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {{ doc.name }}
+            </a>
+              <button 
+    type="button" 
+    (click)="deleteDoc(doc)" 
+    class="delete-btn">
+    x
+  </button>
           </div>
         </div>
         <ng-template #nodocs>No documents uploaded.</ng-template>
@@ -37,6 +58,5 @@
 
       <button type="submit">Save</button>
     </form>
-
   </div>
 </div>

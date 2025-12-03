@@ -1,6 +1,4 @@
-
 <div class="doctor-layout">
-  
   <app-doctor-sidebar></app-doctor-sidebar>
 
   <div class="content-area">
@@ -19,15 +17,29 @@
       <label>Slot duration (minutes)</label>
       <input type="number" min="5" formControlName="slot_duration_minutes" />
 
-      <button type="submit">Save Availability</button>
+      <div class="form-actions">
+        <!-- Preview should not submit the form, so type="button" -->
+        <button type="button" (click)="previewSlots()" [disabled]="loading || !scheduleForm.get('date')?.value">
+          Preview Slots
+        </button>
+
+        <button type="submit" [disabled]="loading">
+          {{ loading ? 'Saving...' : 'Save Availability' }}
+        </button>
+      </div>
     </form>
 
-    <div *ngIf="slots.length > 0">
-      <h3>Slots</h3>
-      <div *ngFor="let s of slots">
-        {{ s.start }} - {{ s.end }}
-      </div>
-    </div>
-  </div>
+    <div *ngIf="message" class="message">{{ message }}</div>
+    <div *ngIf="error" class="error">{{ error }}</div>
 
+<div *ngIf="(slots?.length || 0) > 0" class="slots-preview">
+  <h3>Slots</h3>
+  <div *ngFor="let s of slots" class="slot-row">
+    {{ s.start }} - {{ s.end }}
+  </div>
+</div>
+
+
+
+  </div>
 </div>

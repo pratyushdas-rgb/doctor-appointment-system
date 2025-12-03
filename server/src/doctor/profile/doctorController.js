@@ -39,4 +39,30 @@ const updateProfile = async (req, res) => {
   }
 };
 
-module.exports = { getProfile, updateProfile };
+const uploadDocument = async (req, res) => {
+  try {
+    const result = await service.uploadDocument(req.user.id, req.file);
+    return res.json(result);
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+const deleteDocument = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { url } = req.body;
+
+    if (!url) return res.status(400).json({ error: "Document URL is required" });
+
+    const docs = await service.deleteDocument(userId, url);
+
+    return res.json({ message: "Document removed", documents: docs });
+  } catch (err) {
+    console.error("deleteDocument error:", err);
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+
+module.exports = { getProfile, updateProfile, uploadDocument, deleteDocument };

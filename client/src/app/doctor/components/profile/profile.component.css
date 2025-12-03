@@ -21,7 +21,9 @@ label {
   font-weight: 600;
 }
 
-select, textarea, input {
+select,
+textarea,
+input {
   padding: 8px;
   font-size: 14px;
   border-radius: 6px;
@@ -36,4 +38,25 @@ button {
   border: none;
   border-radius: 6px;
   cursor: pointer;
+}
+.upload-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.progress {
+  font-size: 13px;
+  color: #333;
+}
+
+.delete-btn {
+  border: none;
+  background: transparent;
+  color: red;
+  font-size: 16px;
+  cursor: pointer;
+}
+.delete-btn:hover {
+  color: darkred;
 }
