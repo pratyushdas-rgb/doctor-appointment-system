@@ -56,7 +56,7 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    return !!localStorage.getItem('access_token');
   }
 
   requestPasswordReset(email: string) {

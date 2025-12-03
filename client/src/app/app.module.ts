@@ -6,10 +6,12 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FirstPageComponent } from './first-page/first-page.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FirstPageComponent
   ],
   imports: [
     AuthModule,
