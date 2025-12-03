@@ -2,7 +2,7 @@ const service = require('./availabilityService');
 
 const setAvailability = async (req, res) => {
   try {
-      const userId = req.user.id;
+    const userId = req.user.id; 
     const { date, start_time, end_time, slot_duration_minutes } = req.body;
 
     if (!date || !start_time || !end_time || !slot_duration_minutes) {
@@ -11,19 +11,19 @@ const setAvailability = async (req, res) => {
       });
     }
 
-const result = await service.setAvailability({
-  userId,
-  date,
-  startTime: start_time,
-  endTime: end_time,
-  slotDuration: parseInt(slot_duration_minutes, 10)
-});
+    const result = await service.setAvailability({
+      userId,
+      date,
+      startTime: start_time,
+      endTime: end_time,
+      slotDuration: parseInt(slot_duration_minutes)
+    });
 
 
     res.status(201).json(result);
   } catch (err) {
-    console.error('setAvailability error:', err);
-    res.status(500).json({ error: err.message });
+    console.error("setAvailability error:", err);
+    return res.status(400).json({ error: err.message });
   }
 };
 

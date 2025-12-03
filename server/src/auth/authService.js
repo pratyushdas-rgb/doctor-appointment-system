@@ -64,7 +64,7 @@ const requestPasswordReset = async (email) => {
   }
 
   const token = crypto.randomBytes(32).toString('hex');
-  const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+  const expires = new Date(Date.now() + 60 * 60 * 1000 * 24); // 1 day
 
   await authRepository.setResetToken(user.email, token, expires);
 

@@ -47,11 +47,38 @@ const generateSlots = (dateStr, startTimeStr, endTimeStr, durationMinutes) => {
   return slots;
 };
 
-const setAvailability = async ({ userId, date, startTime, endTime, slotDuration }) => {
+const setAvailability = async ({
+  userId,
+  date,
+  startTime,
+  endTime,
+  slotDuration,
+}) => {
   const doctorId = await repo.getDoctorIdByUserId(userId);
 
   if (!doctorId) {
-    throw new Error('Doctor profile not found for this user');
+    throw new Error("Doctor profile not found");
+  }
+
+  const existing = await repo.getAvailabilitiesByDoctorAndDate(doctorId, date);
+
+  const toMinutes = (t) => {
+    const [h, m] = t.split(":").map(Number);
+    return h * 60 + m;
+  };
+
+  const newStart = toMinutes(startTime);
+  const newEnd = toMinutes(endTime);
+
+  for (const a of existing) {
+    const exStart = toMinutes(a.start_time);
+    const exEnd = toMinutes(a.end_time);
+
+    if (Math.max(exStart, newStart) < Math.min(exEnd, newEnd)) {
+      throw new Error(
+        `Schedule conflict: ${a.start_time} - ${a.end_time} overlaps with new time`
+      );
+    }
   }
 
   const created = await repo.createAvailabilityReturning({
@@ -70,13 +97,16 @@ const setAvailability = async ({ userId, date, startTime, endTime, slotDuration 
 const getAvailabilitySlots = async (userId, date) => {
   const doctorId = await repo.getDoctorIdByUserId(userId);
   if (!doctorId) return [];
-  
-  const availabilities = await repo.getAvailabilitiesByDoctorAndDate(doctorId, date);
+
+  const availabilities = await repo.getAvailabilitiesByDoctorAndDate(
+    doctorId,
+    date
+  );
   if (!availabilities || availabilities.length === 0) return [];
 
   const appointments = await repo.getAppointmentsForDoctorDate(doctorId, date);
 
-  const bookedRanges = appointments.map(ap => {
+  const bookedRanges = appointments.map((ap) => {
     const dt = new Date(ap.appointment_date);
     const start = formatTime(dt);
     return { start, id: ap.id, status: ap.status };
@@ -85,10 +115,15 @@ const getAvailabilitySlots = async (userId, date) => {
   const allSlots = [];
 
   for (const a of availabilities) {
-    const slots = generateSlots(date, a.start_time, a.end_time, a.slot_duration_minutes);
+    const slots = generateSlots(
+      date,
+      a.start_time,
+      a.end_time,
+      a.slot_duration_minutes
+    );
 
-    const annotated = slots.map(s => {
-      const booked = bookedRanges.some(b => b.start === s.start);
+    const annotated = slots.map((s) => {
+      const booked = bookedRanges.some((b) => b.start === s.start);
       return { ...s, booked };
     });
 
