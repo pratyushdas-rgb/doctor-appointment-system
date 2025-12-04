@@ -7,6 +7,7 @@ const getDoctorIdByUserId = async (userId) => {
     .from('doctors')
     .field('id')
     .where('user_id = ?', userId)
+    .where('verified = ?', true)
     .limit(1)
     .toParam();
 

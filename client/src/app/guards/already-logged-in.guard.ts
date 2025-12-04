@@ -15,7 +15,10 @@ export class AlreadyLoggedInGuard implements CanActivate {
 
       if (user?.role === 2) {
         this.router.navigate(['/doctor/dashboard']);
-      } else {
+      } else if (user?.role === 1) {
+        this.router.navigate(['/patient/dashboard']);
+      } 
+      else {
         this.router.navigate(['/dashboard']);
       }
 

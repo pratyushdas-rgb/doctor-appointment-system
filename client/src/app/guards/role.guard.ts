@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable({
@@ -8,18 +8,37 @@ import { AuthService } from '../auth/auth.service';
 export class RoleGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
 
-  canActivate(): boolean {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
     const user = this.auth.getUser();
+
     if (!user) {
-      this.router.navigate(['/auth/login']);
-      return false;
+      return this.router.createUrlTree(['/auth/login']);
     }
 
-    if (user.role === 2 || user.role === '2') {
+    const allowedRoles: Array<number | string> = route.data['roles'] ?? [];
+
+    const userRole = typeof user.role === 'string' && !isNaN(Number(user.role)) ? Number(user.role) : user.role;
+
+    if (!allowedRoles || allowedRoles.length === 0) {
       return true;
     }
 
-    this.router.navigate(['/']);
-    return false;
+    const allowed = allowedRoles.some(ar => {
+      const arNorm = (typeof ar === 'string' && !isNaN(Number(ar))) ? Number(ar) : ar;
+      return arNorm === userRole;
+    });
+
+    if (allowed) {
+      return true; 
+    }
+
+    if (userRole === 2) {
+      return this.router.createUrlTree(['/doctor/dashboard']);
+    }
+    if (userRole === 1) {
+      return this.router.createUrlTree(['/patient/dashboard']);
+    }
+
+    return this.router.createUrlTree(['/']);
   }
 }

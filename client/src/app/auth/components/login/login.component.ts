@@ -33,8 +33,11 @@ this.auth.login(email!, password!).subscribe({
     this.loading = false;
     if (user && (user.role === 2 || user.role === '2')) {
       this.router.navigate(['/doctor']);
-    } else {
-      this.router.navigate(['/']); // or other dashboard
+    }else if (user && (user.role === 1 || user.role === '1')) {
+      this.router.navigate(['/patient']);
+    }
+     else {
+      this.router.navigate(['/']); 
     }
   },
   error: (err) => {

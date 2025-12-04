@@ -1,0 +1,19 @@
+<div class="sidebar">
+    <div class="brand">
+      <h3>Patient Panel</h3>
+      <div class="user-info">
+        <div class="name">{{ user?.first_name }} {{ user?.last_name }}</div>
+        <div class="email">{{ user?.email }}</div>
+      </div>
+  </div>
+
+  <nav class="nav">
+    <a *ngFor="let l of links" 
+       [routerLink]="l.path"
+       routerLinkActive="active">
+      {{ l.label }}
+    </a>
+  </nav>
+
+  <button class="logout-btn" (click)="logout()">Logout</button>
+</div>

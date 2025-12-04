@@ -1,0 +1,76 @@
+.sidebar {
+  width: 260px;
+  height: 96vh;
+  background: #1e293b; 
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+}
+
+.brand {
+  margin-bottom: 30px;
+}
+
+.brand h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #38bdf8; 
+}
+
+.user-info {
+  margin-top: 8px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: auto;
+}
+
+.nav a {
+  padding: 12px 15px;
+  text-decoration: none;
+  color: #cbd5e1;
+  border-radius: 6px;
+  transition: 0.3s ease;
+  font-size: 15px;
+}
+
+.nav a:hover {
+  background: #334155;
+  color: #fff;
+}
+
+.nav a.active {
+  background: #0ea5e9;
+  color: #fff;
+}
+
+.logout-btn {
+  width: 100%;
+  background: #ef4444;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+}
+
+:host ::ng-deep .main-content {
+  margin-left: 260px;
+}
