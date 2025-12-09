@@ -1,20 +1,31 @@
-<div class="auth-card">
-  <h2>Login</h2>
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>Welcome Back</h2>
+    <p class="subtitle">Login to continue</p>
 
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <input formControlName="email" placeholder="Email" />
-    <input type="password" formControlName="password" placeholder="Password" />
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <input formControlName="email" placeholder="Email" />
+      </div>
 
-    <div *ngIf="error" class="error">{{ error }}</div>
+      <div class="input-group">
+        <input type="password" formControlName="password" placeholder="Password" />
+      </div>
 
-    <button type="submit" [disabled]="loading">
-      {{ loading ? 'Logging in...' : 'Login' }}
-    </button>
-  </form>
+      <div *ngIf="error" class="error">{{ error }}</div>
 
-  <p class="muted">
-    <a routerLink="/auth/forgot-password">Forgot password?</a>
-  </p>
+      <button type="submit" class="btn" [disabled]="loading">
+        {{ loading ? 'Logging in...' : 'Login' }}
+      </button>
+    </form>
 
-  <p class="muted">Don't have account? <a routerLink="/auth/register">Register</a></p>
+    <p class="link-row">
+      <a routerLink="/auth/forgot-password">Forgot password?</a>
+    </p>
+
+    <p class="link-row">
+      Don't have an account?
+      <a routerLink="/auth/register">Register</a>
+    </p>
+  </div>
 </div>

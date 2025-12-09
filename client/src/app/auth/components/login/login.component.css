@@ -1,17 +1,100 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f3f6fb;
+  padding: 20px;
+}
+
 .auth-card {
-  max-width: 420px;
-  margin: 2rem auto;
-  padding: 1.2rem;
-  border-radius: 8px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-}
-.auth-card input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 0.6rem;
-  border-radius: 6px;
-  border: 1px solid #ddd;
+  max-width: 380px;
+  background: #fff;
+  padding: 35px 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  animation: fadeIn 0.4s ease;
 }
-button { width: 100%; padding: 10px; border-radius: 6px; border: none; cursor: pointer; background:#1976d2; color: white; }
-.error { color: #c62828; margin-bottom: 0.6rem; }
-.muted { color: #666; font-size: 0.9rem; margin-top: 0.8rem; }
+
+.auth-card h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.subtitle {
+  color: #6c757d;
+  margin-bottom: 25px;
+  font-size: 14px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.input-group input {
+  width: 92%;
+  padding: 12px 14px;
+  font-size: 15px;
+  border: 1.4px solid #dcdfe6;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.input-group input:focus {
+  border-color: #3b7cff;
+  box-shadow: 0 0 0 2px rgba(59, 124, 255, 0.15);
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background: #3b7cff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn:hover:not(:disabled) {
+  background: #2e63d4;
+}
+
+.error {
+  margin-bottom: 10px;
+  color: #d9534f;
+  font-size: 14px;
+}
+
+.link-row {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.link-row a {
+  color: #3b7cff;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.link-row a:hover {
+  text-decoration: underline;
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -92,8 +92,6 @@ const setAvailability = async (req, res) => {
   }
 };
 
-module.exports = { setAvailability };
-
 const getAvailabilitySlots = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -113,7 +111,4 @@ const getAvailabilitySlots = async (req, res) => {
   }
 };
 
-module.exports = {
-  setAvailability,
-  getAvailabilitySlots,
-};
+module.exports = { setAvailability, getAvailabilitySlots };
