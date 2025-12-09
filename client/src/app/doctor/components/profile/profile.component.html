@@ -28,6 +28,7 @@
         <div class="upload-row">
           <input
             type="file"
+            accept="image/*"
             (change)="onFileSelected($event)"
             [disabled]="uploading"
           />

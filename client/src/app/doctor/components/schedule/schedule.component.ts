@@ -58,7 +58,7 @@ export class ScheduleComponent implements OnInit {
       error: (err) => {
         this.loading = false;
         this.slots = []; 
-        this.error = err?.error?.error || 'Failed to save availability';
+        this.error = err.error.errors;
     }
     });
   }
