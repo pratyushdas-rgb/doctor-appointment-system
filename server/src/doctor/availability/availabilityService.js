@@ -57,7 +57,7 @@ const setAvailability = async ({
   const doctorId = await repo.getDoctorIdByUserId(userId);
 
   if (!doctorId) {
-    throw new Error("Doctor profile not found");
+    throw new Error("Please verify your profile to schedule your availability");
   }
 
   const existing = await repo.getAvailabilitiesByDoctorAndDate(doctorId, date);

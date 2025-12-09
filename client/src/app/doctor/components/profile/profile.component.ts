@@ -24,7 +24,7 @@ export class ProfileComponent implements OnInit {
   loading = false;
   specializations: any[] = [];
   departments: any[] = [];
-
+saving = false;
 profileForm = this.fb.nonNullable.group<DoctorProfileForm>({
   specialization_id: 0,
   department_id: 0,
@@ -44,6 +44,7 @@ profileForm = this.fb.nonNullable.group<DoctorProfileForm>({
   ngOnInit(): void {
     this.loadReferenceData();
     this.loadProfile();
+    
   }
 
   loadReferenceData() {
@@ -72,15 +73,39 @@ profileForm = this.fb.nonNullable.group<DoctorProfileForm>({
     });
   }
 
-  saveProfile() {
-    if (this.profileForm.invalid) return;
+saveProfile() {
+  if (this.profileForm.invalid) return;
 
-    const payload = this.profileForm.getRawValue();
-    this.doctorService.updateMyProfile(payload).subscribe({
-      next: () => alert('Profile updated successfully'),
-      error: () => alert('Failed to update profile')
-    });
-  }
+  const payload = this.profileForm.getRawValue();
+  this.saving = true;
+
+  this.doctorService.updateMyProfile(payload).subscribe({
+    next: () => {
+      this.saving = false;
+      alert('Profile updated successfully');
+    },
+    error: (err) => {
+      const status = err && err.status != null ? err.status : -1;
+      if (status === 404) {
+        this.doctorService.createProfile(payload).subscribe({
+          next: () => {
+            this.saving = false;
+            alert('Profile created successfully');
+          },
+          error: () => {
+            this.saving = false;
+            alert('Failed to create profile');
+          }
+        });
+      } else {
+        this.saving = false;
+        alert('Failed to update profile');
+      }
+    }
+  });
+}
+
+
 
    onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;

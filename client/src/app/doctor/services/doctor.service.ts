@@ -11,6 +11,9 @@ export class DoctorService {
 
   constructor(private http: HttpClient) {}
 
+  createProfile(payload: any) {
+    return this.http.post<any>(`${this.base}/doctor/profile`, payload);
+  }
   getMyProfile() {
     return this.http.get<any>(`${this.base}/doctor/profile`);
   }

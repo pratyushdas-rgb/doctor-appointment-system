@@ -24,6 +24,7 @@ const upload = multer({
 });
 
 router.get('/doctor/profile', doctorController.getProfile);
+router.post('/doctor/profile',doctorController.createDoctor);
 router.put('/doctor/profile',doctorController.updateProfile);
 router.post('/doctor/profile/documents', upload.single('file'), doctorController.uploadDocument);
 router.delete('/doctor/profile/documents', doctorController.deleteDocument);

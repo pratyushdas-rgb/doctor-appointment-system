@@ -1,17 +1,17 @@
-const repo = require('./doctorRepository');
-const path = require('path')
-const fs = require('fs')
+const repo = require("./doctorRepository");
+const path = require("path");
+const fs = require("fs");
 
 const getMyProfile = async (userId) => {
   const doctorId = await repo.getDoctorIdByUserId(userId);
-  if (!doctorId) throw new Error('Doctor profile not found');
+  if (!doctorId) throw new Error("Doctor profile not found");
   const profile = await repo.getDoctorProfileByDoctorId(doctorId);
   return profile;
 };
 
 const updateMyProfile = async (userId, payload) => {
   const doctorId = await repo.getDoctorIdByUserId(userId);
-  if (!doctorId) throw new Error('Doctor profile not found');
+  if (!doctorId) throw new Error("Doctor profile not found");
 
   const specializationId = payload.specialization_id ?? null;
   const departmentId = payload.department_id ?? null;
@@ -23,7 +23,7 @@ const updateMyProfile = async (userId, payload) => {
     specializationId,
     departmentId,
     bio,
-    documents
+    documents,
   });
 
   return updated;
@@ -34,7 +34,14 @@ const uploadDocument = async (userId, file) => {
   const doctorId = await repo.getDoctorIdByUserId(userId);
   if (!doctorId) throw new Error("Doctor profile not found");
 
-  const uploadFolder = path.join(__dirname, "..", "..", "uploads", "doctors", String(doctorId));
+  const uploadFolder = path.join(
+    __dirname,
+    "..",
+    "..",
+    "uploads",
+    "doctors",
+    String(doctorId)
+  );
   fs.mkdirSync(uploadFolder, { recursive: true });
 
   const newFileName = `${Date.now()}-${file.originalname}`;
@@ -59,7 +66,40 @@ const uploadDocument = async (userId, file) => {
     added: documentObj
   };
 };
+const createDoctorProfile = async ({
+  userId,
+  specializationId = null,
+  departmentId = null,
+  bio = null,
+  documents = [],
+}) => {
+  const userRes = await client.query(
+    "SELECT id FROM users WHERE id = $1 LIMIT 1",
+    [userId]
+  );
+  if (!userRes.rows.length) {
+    const err = new Error("User not found");
+    err.status = 404;
+    throw err;
+  }
 
+  const existing = await repo.getDoctorIdByUserId(userId);
+  if (existing) {
+    const err = new Error("Doctor profile already exists for this user");
+    err.status = 409;
+    err.doctorId = existing;
+    throw err;
+  }
+
+  const newDoctor = await repo.createDoctorProfile({
+    userId,
+    specializationId,
+    departmentId,
+    bio,
+    documents,
+  });
+  return newDoctor;
+};
 const deleteDocument = async (userId, fileUrl) => {
   const doctorId = await repo.getDoctorIdByUserId(userId);
   if (!doctorId) throw new Error("Doctor profile not found");
@@ -76,4 +116,10 @@ const deleteDocument = async (userId, fileUrl) => {
   return updatedDocs;
 };
 
-module.exports = { getMyProfile, updateMyProfile, uploadDocument, deleteDocument };
+module.exports = {
+  getMyProfile,
+  updateMyProfile,
+  uploadDocument,
+  deleteDocument,
+  createDoctorProfile
+};
